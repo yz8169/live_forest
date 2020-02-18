@@ -1,0 +1,84 @@
+
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET         /                                                   controllers.AppController.loginBefore
+
+POST        /liveForest/login                                   controllers.AppController.login
+GET         /liveForest/registerBefore                          controllers.AppController.registerBefore
+POST        /liveForest/userNameCheck                           controllers.AppController.userNameCheck
+POST        /liveForest/register                                controllers.AppController.register
+POST        /liveForest/emailCheck                              controllers.AppController.emailCheck
+GET         /liveForest/registerActiveBefore                    controllers.AppController.registerActiveBefore
+GET         /liveForest/sendEmail                               controllers.AppController.sendEmail
+GET         /liveForest/registerActive                          controllers.AppController.registerActive
+POST        /liveForest/phoneCheck                              controllers.AppController.phoneCheck
+GET         /liveForest/recoverPasswordBefore                   controllers.AppController.recoverPasswordBefore
+GET         /liveForest/validName                               controllers.AppController.validName
+POST        /liveForest/newPasswordActive                       controllers.AppController.newPasswordActive
+GET         /liveForest/newPasswordBefore                       controllers.AppController.newPasswordBefore
+GET         /liveForest/newPasswordEmailValid                   controllers.AppController.newPasswordEmailValid
+POST        /liveForest/newPassword                             controllers.AppController.newPassword
+
+GET         /liveBoost/tool/getServerTime                      controllers.ToolController.getServerTime
+
+GET         /liveForest/user/toIndex                            controllers.UserController.toIndex
+GET         /liveForest/user/logout                             controllers.UserController.logout
+GET         /liveForest/user/changePasswordBefore               controllers.UserController.changePasswordBefore
+POST        /liveForest/user/changePassword                     controllers.UserController.changePassword
+GET         /liveForest/user/forestBefore                       controllers.UserController.forestBefore
+GET         /liveForest/user/reduceTimes                        controllers.UserController.reduceTimes
+GET         /liveForest/user/toHome                             controllers.UserController.toHome
+GET         /liveForest/user/getLimit                           controllers.UserController.getLimit
+GET         /liveForest/user/detailInfoBefore                   controllers.UserController.detailInfoBefore
+GET         /liveForest/user/getPdfInfo                         controllers.UserController.getPdfInfo
+POST        /liveForest/user/updatePdfInfo                      controllers.UserController.updatePdfInfo
+
+GET         /liveForest/test/test                               controllers.TestController.refreshTrash
+GET         /liveForest/test/refreshPdfInfo                     controllers.TestController.refreshPdfInfo
+
+GET         /liveForest/user/predict/predictBefore              controllers.PredictController.predictBefore
+POST        /liveForest/user/predict/predict                    controllers.PredictController.predict
+GET         /liveForest/user/predict/batchPredictBefore         controllers.PredictController.batchPredictBefore
+GET         /liveForest/user/predict/downloadExampleFile        controllers.PredictController.downloadExampleFile
+POST        /liveForest/user/predict/batchPredict               controllers.PredictController.batchPredict
+POST        /liveForest/user/predict/exportExcel                controllers.PredictController.exportExcel
+GET         /liveForest/predict/toHtml                          controllers.PredictController.toHtml
+GET         /liveForest/predict/pdfTest                         controllers.PredictController.pdfTest
+POST        /liveForest/predict/export                          controllers.PredictController.export
+GET         /liveForest/predict/predictResult                   controllers.PredictController.predictResult
+POST        /liveForest/predict/fileCheck                       controllers.PredictController.fileCheck
+
+GET         /liveForest/user/mission/missionManageBefore        controllers.MissionController.missionManageBefore
+GET         /liveForest/user/mission/getAllMission              controllers.MissionController.getAllMission
+GET         /liveForest/user/mission/deleteMissionById          controllers.MissionController.deleteMissionById
+POST        /liveForest/user/mission/deleteMissionByIds         controllers.MissionController.deleteMissionByIds
+
+
+GET         /liveForest/admin/limitManageBefore                 controllers.AdminController.limitManageBefore
+GET         /liveForest/admin/logout                            controllers.AdminController.logout
+GET         /liveForest/admin/getAllUser                        controllers.AdminController.getAllUser
+#GET         /liveForest/admin/switchLimitById             controllers.AdminController.switchLimitById
+GET         /liveForest/admin/changePasswordBefore              controllers.AdminController.changePasswordBefore
+POST        /liveForest/admin/changePassword                    controllers.AdminController.changePassword
+GET         /liveForest/admin/getUserById                       controllers.AdminController.getUserById
+POST        /liveForest/admin/updateUser                        controllers.AdminController.updateUser
+GET         /liveForest/admin/deleteUserById                    controllers.AdminController.deleteUserById
+GET         /liveForest/admin/changeEmailBefore                 controllers.AdminController.changeEmailBefore
+POST        /liveForest/admin/changeEmail                       controllers.AdminController.changeEmail
+GET         /liveForest/admin/detailInfoBefore                  controllers.AdminController.detailInfoBefore
+POST        /liveForest/admin/addDays                           controllers.AdminController.addDays
+GET         /liveForest/admin/downloadDb                        controllers.AdminController.downloadDb
+
+
+
+# An example controller showing how to use dependency injection
+GET         /count                                              controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET         /message                                            controllers.AsyncController.message
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                                       controllers.Assets.at(path="/public", file)
+      

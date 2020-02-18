@@ -1,0 +1,384 @@
+@()(implicit request: RequestHeader)
+@admin.main("权限管理")("userManage") {
+	<div class="page-content">
+
+		<div class="page-bar">
+			<ul class="page-breadcrumb">
+				<li>
+					<i class="fa fa fa-table"></i>
+					<a href="#">权限管理</a>
+				</li>
+			</ul>
+		</div>
+
+
+		<div class="row-fluid">
+			<div class="row">
+				<div class="col-md-12 col-sm-12">
+					<div class="portlet blue-madison box">
+						<div class="portlet-title">
+							<div class="caption">
+								权限管理
+							</div>
+						</div>
+
+						<div class="portlet-body">
+							<div class="table-responsive">
+
+								<table class="display table table-bordered" id="table" data-pagination="true" data-search="true"
+								data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, all]" data-multiple-search="true">
+									<thead>
+										<tr>
+											<th data-field="name" data-sortable="true">用户名</th>
+											<th data-field="fullName" data-sortable="true">姓名</th>
+											<th data-field="unit" data-sortable="true">单位</th>
+											<th data-field="email" data-sortable="true">邮箱</th>
+											<th data-field="phone" data-sortable="true">手机</th>
+											<th data-field="createTime" data-sortable="true"
+											>创建时间</th>
+											<th data-field="remainTimes" data-sortable="true"
+											data-formatter="timesFmt">有效次数</th>
+											<th data-field="remainDays" data-sortable="true"
+											data-formatter="daysFmt">有效期限</th>
+											<th data-field="limit" data-formatter="operateFmt">操作</th>
+										</tr>
+									</thead>
+								</table>
+
+								<div id="updateModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									<div class="modal-dialog" style="width: 650px">
+										<div class="modal-content">
+											<div class="modal-header bg-primary">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+												<h4 class="modal-title">
+													<i class="fa fa-key"></i>
+													<span id="lblAddTitle" style="font-weight: bold">重置密码</span>
+												</h4>
+											</div>
+											<form class="form-horizontal" id="updateForm" action="" data-toggle="validator">
+												<div class="modal-body">
+													<div class="row-fluid">
+
+														<div class="form-group">
+															<label class="control-label col-sm-3">用户名:</label>
+															<div class="col-sm-6">
+																<input class="form-control" name="name" readonly/>
+															</div>
+														</div>
+
+
+														<div class="form-group">
+															<label class="control-label col-sm-3">密码:</label>
+															<div class="col-sm-6">
+																<input class="form-control" name="password" />
+															</div>
+														</div>
+
+													</div>
+												</div>
+												<div class="modal-footer bg-info">
+													<input type="hidden" id="id" name="id" />
+													<button type="button" class="btn blue" onclick="update()">
+														确定</button>
+													<button type="button" class="btn green" data-dismiss="modal">
+														取消</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+
+								<div id="addDaysModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									<div class="modal-dialog" style="width: 800px">
+										<div class="modal-content">
+											<div class="modal-header bg-primary">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+												<h4 class="modal-title">
+													<i class="fa fa-edit"></i>
+													<span id="lblAddTitle" style="font-weight: bold">设置权限</span>
+												</h4>
+											</div>
+											<form class="form-horizontal" id="addDayForm" action="" data-toggle="validator">
+												<div class="modal-body">
+													<div class="row-fluid">
+
+														<div class="form-group">
+															<label class="control-label col-sm-3">用户名:</label>
+															<div class="col-sm-6">
+																<input class="form-control" name="name" readonly/>
+															</div>
+														</div>
+
+														<div class="form-group">
+															<label class="control-label col-sm-3">有效次数:</label>
+															<div class="col-sm-6">
+																<input class="form-control" name="remainTimes"/>
+															</div>
+														</div>
+
+														<div class="form-group">
+															<label class="control-label col-sm-3">开始日期:</label>
+															<div class="col-sm-6">
+																<input class="form-control datepicker" name="startTime" id="startTime" />
+															</div>
+														</div>
+
+														<div class="form-group">
+															<label class="control-label col-sm-3">截止日期:</label>
+															<div class="col-sm-6">
+																<input class="form-control datepicker" name="endTime" id="endTime" />
+															</div>
+														</div>
+
+
+													</div>
+												</div>
+												<div class="modal-footer bg-info">
+													<input type="hidden" id="id" name="id" />
+													<button type="button" class="btn blue" onclick="addDays()">
+														确定</button>
+													<button type="button" class="btn green" data-dismiss="modal">
+														取消</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+	</div>
+
+
+	<script>
+			$(function () {
+
+				$.ajax({
+					url: "@routes.AdminController.getAllUser()",
+					type: "get",
+					dataType: "json",
+					success: function (data) {
+						$('#table').bootstrapTable({
+							data: data
+						});
+					}
+				})
+
+				$(".datepicker").datetimepicker({
+					format: "yyyy-mm-dd hh:ii:ss",
+					language: "zh-CN"
+				})
+
+				bootstrapValidator()
+
+				$('.datepicker').on('changeDate show blur', function(e) {
+					$('#addDayForm').bootstrapValidator('revalidateField', 'startTime');
+					$('#addDayForm').bootstrapValidator('revalidateField', 'endTime');
+
+				});
+
+
+
+
+			})
+
+
+			function operateFmt(value, row, index) {
+				return "&nbsp;<a title='重置密码' onclick=\"resetShow('" + row.id + "')\" style='cursor: pointer;'><span><em class='fa fa-key'></em></span></a>" +
+						" <a title='删除' onclick=\"deleteData('" + row.id + "')\" style='cursor: pointer;'><span><em class='fa fa-close'></em></span></a>" +
+						" <a title='设置权限' onclick=\"daysShow('" + row.id + "')\" style='cursor: pointer;'><span><em class='fa fa-edit'></em></span></a>"
+
+
+			}
+
+			function daysFmt(value, row, index) {
+				var value = getShowValue(row.startTime) + " 至 " +getShowValue(row.endTime)
+				return value
+
+			}
+
+			function timesFmt(value, row, index) {
+				return getShowValue(value)
+
+			}
+
+			function resetShow(id) {
+				$.ajax({
+					url: "@routes.AdminController.getUserById()?id=" + id,
+					type: "get",
+					success: function (data) {
+						$("#updateForm input[name='name']").val(data.name)
+						$("#updateModal").modal("show")
+					}
+				});
+			}
+
+			function daysShow(id) {
+				$.ajax({
+					url: "@routes.AdminController.getUserById()?id=" + id,
+					type: "get",
+					success: function (data) {
+					    $("#addDayForm input").each(function (i,v) {
+						    var name=$(this).attr("name")
+						    $(this).val(data[name])
+					    })
+						$("#addDaysModal").modal("show")
+					}
+				});
+			}
+
+			function deleteData(id) {
+				swal({
+							title: "",
+							text: "确定要删除此数据吗？",
+							type: "warning",
+							showCancelButton: true,
+							showConfirmButton: true,
+							confirmButtonClass: "btn-danger",
+							confirmButtonText: "确定",
+							closeOnConfirm: false,
+							cancelButtonText: "取消"
+						},
+						function () {
+							$.ajax({
+								url: "@routes.AdminController.deleteUserById()?id=" + id,
+								type: "get",
+								success: function (data) {
+									$('#table').bootstrapTable("load", data);
+									swal("成功！", "删除成功！", "success")
+								}
+							});
+						});
+			}
+
+			function update() {
+				var form = $("#updateForm")
+				var fv = form.data("bootstrapValidator")
+				fv.validate()
+				if (fv.isValid()) {
+					$.ajax({
+						url: "@routes.AdminController.updateUser()",
+						type: "post",
+						data: $("#updateForm").serialize(),
+						success: function (data) {
+							$("#updateModal").modal("hide")
+							fv.resetForm(true)
+							swal("成功！", "密码重置成功！", "success")
+							$('#table').bootstrapTable("load", data);
+						}
+					});
+				}
+			}
+
+			function addDays() {
+				var form = $("#addDayForm")
+				var fv = form.data("bootstrapValidator")
+				fv.validate()
+				if (fv.isValid() && totalCheck()) {
+					$.ajax({
+						url: "@routes.AdminController.addDays()",
+						type: "post",
+						data: $("#addDayForm").serialize(),
+						success: function (data) {
+							$("#addDaysModal").modal("hide")
+							fv.resetForm(true)
+							swal("成功！", "设置权限成功！", "success")
+							$('#table').bootstrapTable("load", data);
+						}
+					});
+				}
+			}
+
+			function totalCheck() {
+				return timeCheck("","开始日期不能大于截止日期！")
+			}
+
+
+			function timeCheck(timeId,msg) {
+				var b = true
+				var end = $("#"+timeId+"endTime").val();
+				var start = $("#"+timeId+"startTime").val()
+				var startTime = new Date(start.replace("-", "/").replace("-", "/"))
+				var endTime = new Date(end.replace("-", "/").replace("-", "/"))
+				if (startTime > endTime) {
+					layer.msg(msg, {
+						icon: 5,
+						time: 1500
+					});
+					b = false
+				}
+				return b;
+
+
+			}
+
+			function bootstrapValidator() {
+
+				$('#updateForm').bootstrapValidator({
+					framework: 'bootstrap',
+					icon: {
+						valid: 'glyphicon glyphicon-ok',
+						invalid: 'glyphicon glyphicon-remove',
+						validating: 'glyphicon glyphicon-refresh'
+					},
+					fields: {
+						password: {
+							validators: {
+								notEmpty: {
+									message: '密码不能为空！'
+								},
+							}
+						},
+					}
+				});
+
+				$('#addDayForm').bootstrapValidator({
+					framework: 'bootstrap',
+					icon: {
+						valid: 'glyphicon glyphicon-ok',
+						invalid: 'glyphicon glyphicon-remove',
+						validating: 'glyphicon glyphicon-refresh'
+					},
+					fields: {
+						remainTimes: {
+							validators: {
+								integer: {
+									message: '有效次数必须为整数！'
+								}
+							}
+						},
+						startTime:{
+							validators: {
+								date: {
+									format:"YYYY-MM-DD h:m:s",
+									message: '开始日期不合法！'
+								}
+							}
+						},
+						endTime:{
+							validators: {
+								date: {
+									format:"YYYY-MM-DD H:m:s",
+									message: '截止日期不合法！'
+								}
+							}
+						},
+
+					}
+				});
+
+			}
+
+
+
+	</script>
+
+
+}

@@ -1,0 +1,51 @@
+@(id: String)
+<div class="page-sidebar-wrapper">
+	<div class="page-sidebar navbar-collapse collapse">
+		<ul class="page-sidebar-menu " data-auto-scroll="true" data-slide-speed="200" id="projects">
+
+			<li class="sidebar-toggler-wrapper">
+					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+				<div class="sidebar-toggler">
+				</div>
+					<!-- END SIDEBAR TOGGLER BUTTON -->
+			</li>
+			<li style="height: 10px"></li>
+
+			<li id='userManage'>
+				<a href='@routes.AdminController.limitManageBefore()'>
+					<i class='fa fa-table'></i>
+					<span class='title'>权限管理</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+			<li id='userData'>
+				<a href='@routes.AdminController.downloadDb()'>
+					<i class='fa fa-download'></i>
+					<span class='title'>下载用户记录</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+			<li id='detailInfo'>
+				<a href='@routes.AdminController.detailInfoBefore()'>
+					<i class='fa fa-user'></i>
+					<span class='title'>账户信息</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+
+		</ul>
+	</div>
+</div>
+<script>
+		$(function () {
+			var menuContainer = jQuery('.page-sidebar ul');
+			menuContainer.children('li.active').removeClass('active');
+			$("#" + "@id").addClass('active')
+
+
+		})
+
+</script>

@@ -1,0 +1,187 @@
+@(email:String)(implicit flash: Flash)
+<style>
+		.registration-form input[type="text"], .registration-form input[type="password"], .registration-form input[type="email"] {
+			padding: 10px 15px;
+			height: auto;
+		}
+
+		.has-feedback .form-control {
+			padding-right: 42.5px;
+		}
+</style>
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>账户激活</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap-sweetalert-master/dist/sweetalert.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("public/bootstrapvalidator-master/dist/css/bootstrapValidator.min.css")">
+		@*<link rel="stylesheet" media="screen" href="@routes.Assets.at("FormValidation/dist/css/formValidation.min.css")">*@
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/css/bootstrap.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/css/bootstrap-theme.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap/css/bootstrap-responsive.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("font-awesome-4.7.0/css/font-awesome.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/layout.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/components.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/uniform.default.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("simple-line-icons/simple-line-icons.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/page.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/doc.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap-table-master/dist/bootstrap-table.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("select2-4.0.3/dist/css/select2.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("bootstrap-fileinput-master/css/fileinput.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/login-5.min.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/my.css")">
+		<script src="@routes.Assets.at("bootstrap/js/jquery-3.1.1.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrap-sweetalert-master/dist/sweetalert.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrap-table-master/dist/bootstrap-table.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrap-table-master/dist/locale/bootstrap-table-zh-CN.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("select2-4.0.3/dist/js/select2.full.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/bootstrap3-typeahead.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrap-table-master/dist/extensions/export/bootstrap-table-export.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrap-table-master/dist/extensions/export/tableExport.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrap-table-master/dist/extensions/multiple-search/bootstrap-table-multiple-search.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("jquery-backstretch-master/jquery.backstretch.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("jquery-ui-1.12.1/jquery-ui.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("bootstrapvalidator-master/dist/js/bootstrapValidator.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("FormValidation/dist/js/formValidation.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("FormValidation/dist/js/framework/bootstrap.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/gVerify.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/global.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/login.js")" type="text/javascript"></script>
+
+
+	</head>
+	<body class=" login">
+		<style>
+				.has-feedback .form-control {
+					padding-right: 10px;
+				}
+				.fglefttitle {
+					font-size: 30px;
+					font-weight: lighter;
+					color: #A2A2A2;
+				}
+
+		</style>
+			<!-- BEGIN : LOGIN PAGE 5-2 -->
+		<div class="user-login-5">
+			<div class="row bs-reset">
+				<div class="col-md-6 login-container bs-reset">
+
+					@titleInfo()
+
+					<div class="login-content">
+
+						<div class="register">
+							<h2 class="page-heading text-success" style="font-size: 25px;">账户激活</h2>
+						</div>
+
+						<div class="row">
+							<div class="fgleftct" align="center" style="margin-top: 10px">
+								<span class="fglefttitle">我们已邮一封信到您的邮箱<br> <span
+								style="font-size: 20px;"> @email,
+								</span> <br>请查看您的邮箱按提示操作。<br> <form id="form">
+									<p style="font-size: 16px; max-width: 600px;">
+										如未收到邮件,请点击右边按钮重发。
+										<input class="hide" name="email"
+										value="@email" />
+										<button type="button" id="refreshButton" class="btn btn-xs btn-success"
+										style="border-radius: 10px;font-size: 12px" onclick="sendEmail()">
+											<em class="fa fa-refresh"></em>&nbsp;重发邮件
+										</button>
+								<p>
+								</form></span> <br> <br>
+
+
+							</div>
+						</div>
+
+
+
+					</div>
+
+					<div class="login-footer">
+						<div class="row bs-reset">
+							<div class="col-xs-12 bs-reset">
+								<div class="login-copyright text-right">
+									<p style="color: black">
+										版权所有2018 深圳市绘云生物科技有限公司 All Rights Reserved
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-md-6 bs-reset">
+					<div class="login-bg">
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script>
+		var count = 60
+		var interValObj
+		var curCount
+		$(function () {
+
+		    sendEmail()
+
+		})
+
+		function setRemainTime() {
+			if (curCount == 0) {
+				window.clearInterval(interValObj)
+				$("#refreshButton").text("重发邮件").attr("disabled", false)
+			} else {
+				curCount--
+				$("#refreshButton").text("重发邮件（" + curCount + "）")
+			}
+		}
+
+	function sendEmail() {
+		curCount = count
+		$("#refreshButton").text("重发邮件（" + curCount + "）").attr("disabled", true)
+		interValObj = window.setInterval(setRemainTime, 1000)
+		$.ajax({
+			url: "@routes.AppController.sendEmail()",
+			type: "get",
+			data:$("#form").serialize(),
+			success: function (data) {
+				if (data.valid == "false") {
+					layer.msg(data.message, {
+						icon: 5,
+						time: 3000
+					});
+				}
+
+			}
+		});
+
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

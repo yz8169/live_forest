@@ -1,0 +1,136 @@
+@()(implicit request: RequestHeader)
+@admin.main("邮箱修改")("detailInfo") {
+	<style>
+			.icon2x {
+				width: 24px;
+				font-size: 20px;
+				min-width: 24px;
+				display: inline-block;
+			}
+
+	</style>
+
+
+	<div class="page-content">
+
+		<div class="page-bar">
+			<ul class="page-breadcrumb">
+				<li>
+					<i class="fa fa fa-user"></i>
+					<a href="@routes.AdminController.detailInfoBefore()">账户信息</a>
+					<i class="fa fa-angle-right"></i>
+				</li>
+				<li>
+					<a href="#">邮箱修改</a>
+				</li>
+			</ul>
+		</div>
+
+
+		<div class="row-fluid">
+			<div class="row">
+				<div class="col-md-12 col-sm-12">
+					<div class="portlet blue-madison box">
+						<div class="portlet-title">
+							<div class="caption">
+								邮箱修改
+							</div>
+						</div>
+
+						<div class="portlet-body">
+
+							<form id="form" class=" form-horizontal" accept-charset="UTF-8"
+							action="@routes.AdminController.changeEmail()" autocomplete="off" method="post" style="margin-top: 30px;">
+
+									<div class="col-sm-offset-2">
+										<span class="@request.flash.get("class")" style="line-height: 35px;" id="error">@request.flash.get("info")
+										</span>
+									</div>
+
+
+								<div class="form-group">
+									<label class="control-label col-sm-2">密码:</label>
+									<div class="col-sm-3">
+										<div class="input-group">
+											<span class="input-group-addon"><em
+											class="fa fa-key icon2x"></em></span>
+											<input  name="password" placeholder="密码" type="password" autofocus="autofocus" class="form-control" required value="" maxlength="30"/>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-sm-2">新邮箱:</label>
+									<div class="col-sm-3">
+										<div class="input-group">
+											<span class="input-group-addon"><em
+											class="fa fa-envelope icon2x"></em></span>
+											<input  name="email" placeholder="新邮箱" class="form-control" maxlength="30"/>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="actions col-sm-offset-2 col-sm-2">
+										<button type="submit" class="btn btn-primary" style="width: 90%;" id="search" >
+											确认修改</button>
+									</div>
+								</div>
+
+							</form>
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+	</div>
+
+	<script>
+			$(function () {
+
+				bootstrapValidator()
+
+			})
+
+
+
+			function bootstrapValidator() {
+				$('#form').bootstrapValidator({
+					framework: 'bootstrap',
+					icon: {
+						valid: 'glyphicon glyphicon-ok',
+						invalid: 'glyphicon glyphicon-remove',
+						validating: 'glyphicon glyphicon-refresh'
+					},
+					fields: {
+						password: {
+							validators: {
+								notEmpty: {
+									message: "密码不能为空！"
+								}
+							}
+						},
+						email: {
+							validators: {
+								notEmpty: {
+									message: "新邮箱不能为空！"
+								},
+								emailAddress: {
+									message: '新邮箱不合法！'
+								},
+							}
+						},
+					}
+
+				});
+			}
+
+
+	</script>
+
+}

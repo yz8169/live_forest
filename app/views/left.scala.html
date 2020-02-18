@@ -1,0 +1,99 @@
+@(id: String)(implicit request: RequestHeader)
+<style>
+
+
+</style>
+<div class="page-sidebar-wrapper">
+	<div class="page-sidebar navbar-collapse collapse">
+		<ul class="page-sidebar-menu " data-auto-scroll="true" data-slide-speed="200" id="projects">
+
+			<li class="sidebar-toggler-wrapper">
+					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+				<div class="sidebar-toggler">
+				</div>
+					<!-- END SIDEBAR TOGGLER BUTTON -->
+			</li>
+			<li style="height: 10px"></li>
+
+			<li id="home">
+				<a href='@routes.UserController.toHome()' >
+					<i class='fa fa-home'></i>
+					<span class='title'>首页</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+			<li id="predict" class="limitContent" >
+				<a href='@routes.PredictController.predictBefore()' >
+					<i class='fa fa-picture-o'></i>
+					<span class='title'>预测</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+			<li id="batchPredict" class="limitContent" >
+				<a href='@routes.PredictController.batchPredictBefore()' >
+					<i class='fa fa-file'></i>
+					<span class='title'>批量预测</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+
+			<li id="missionManage">
+				<a href='@routes.MissionController.missionManageBefore()' >
+					<i class='fa fa-table'></i>
+					<span class='title'>预测记录</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+
+			<li id="index" style="display: none">
+				<a href='@routes.UserController.toIndex()'>
+					<i class='fa fa-life-ring'></i>
+					<span class='title'>分析系统</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+			<li id='passwordChange'>
+				<a href='@routes.UserController.changePasswordBefore()'>
+					<i class='fa fa-key'></i>
+					<span class='title'>密码修改</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+			<li id='detailInfo'>
+				<a href='@routes.UserController.detailInfoBefore()'>
+					<i class='fa fa-user'></i>
+					<span class='title'>账户信息</span>
+					<span class='selected'></span>
+				</a>
+			</li>
+
+
+		</ul>
+	</div>
+</div>
+<script>
+		$(function () {
+			var menuContainer = jQuery('.page-sidebar ul');
+			menuContainer.children('li.active').removeClass('active');
+			$("#" + "@id").addClass('active')
+			$.ajax({
+				url: "@routes.UserController.getLimit()",
+				type: "get",
+				dataType: "json",
+				success: function (data) {
+				    if(!data){
+				        $(".limitContent").hide()
+				        $("#homeContent").hide()
+				        $("#warnning").show()
+				    }
+				}
+			})
+		})
+
+</script>

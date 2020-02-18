@@ -1,0 +1,131 @@
+@()
+<style>
+		.myH4 {
+			margin-top: 0px;
+			margin-bottom: 0px;
+			font-size: 18px;
+			font-weight: 700;
+		}
+
+		#table2,#table2 tr th, #table2 tr td {
+			border:2px solid black;
+		}
+
+		#table3,#table3 tr th, #table3 tr td {
+			border:2px solid black;
+		}
+
+		table {
+			border-spacing: 0;
+			line-height: 1.5em;
+		}
+
+</style>
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/my.css")">
+<div class="myH4" style="text-align: center;">深圳绘云医学检验实验室</div>
+<div class="myH4" style="text-align: center;
+	font-family: Calibri;
+	font-size: 13px">Shenzhen Huiyun Medical Laboratory</div>
+<div class="myH4" style="text-align: center;
+	font-size: 16px">肝纤维化和肝硬化风险检测报告单</div>
+
+<table style="width: 90%;
+	border: 4px solid black;
+	font-size: 12px;
+	margin-top: 15px" align="center">
+	<tr>
+		<td colspan="6">送检单位：</td>
+		<td colspan="6">地址：</td>
+	</tr>
+	<tr>
+		<td colspan="2">姓名：</td>
+		<td colspan="2">性别：</td>
+		<td colspan="2">年龄：</td>
+		<td colspan="3">送检科室：</td>
+		<td colspan="3">申请医生：</td>
+	</tr>
+	<tr>
+		<td colspan="3">门诊/住院号：</td>
+		<td colspan="3">采样时间：</td>
+		<td colspan="3">送检时间：</td>
+		<td colspan="3">样本号：</td>
+	</tr>
+	<tr>
+		<td colspan="3">样本类型：</td>
+		<td colspan="3">样本状态：</td>
+	</tr>
+</table>
+
+<table style="width: 90%;
+	font-size: 12px;
+	margin-top: 15px;
+	table-layout: fixed" align="center" id="table2">
+	<tr>
+		<td colspan="3" style="text-align: center">输入值</td>
+		<td colspan="3" style="text-align: center">计算得到的风险</td>
+	</tr>
+	<tr>
+		<td colspan="1">项目</td>
+		<td colspan="1">测试值</td>
+		<td colspan="1">单位</td>
+		<td colspan="3" rowspan="5"></td>
+	</tr>
+	<tr>
+		<td colspan="1">年龄（Age）</td>
+		<td colspan="1"></td>
+		<td colspan="1">/</td>
+	</tr>
+	<tr>
+		<td colspan="1">天门冬氨酸氨基转移酶（AST）</td>
+		<td colspan="1"></td>
+		<td colspan="1">U/L</td>
+	</tr>
+	<tr>
+		<td colspan="1">丙氨酸氨基转移酶（ALT）</td>
+		<td colspan="1"></td>
+		<td colspan="1">U/L</td>
+	</tr>
+	<tr>
+		<td colspan="1">血小板计数（PLT）</td>
+		<td colspan="1"></td>
+		<td colspan="1">10^9/L</td>
+	</tr>
+</table>
+
+<div class="myH4" style="margin-left: 5%;font-size: 14px;margin-top: 10px;margin-bottom: 10px">风险示意图</div>
+
+<img style="margin-left: 5%" src="@routes.Assets.at("images/logo.jpg")">
+
+<table style="width: 90%;
+	font-size: 12px;
+	margin-top: 15px;" align="center" id="table3">
+	<tr>
+		<td>肝纤维化和肝硬化风险（请参考以下结果）</td>
+	</tr>
+	<tr style="height: 5em;">
+		<td ><div style="float: left">肝硬化风险：</div><div style="float: left">hello!<br>178</div></td>
+	</tr>
+
+	<tr style="height: 5em;">
+		<td ><div style="float: left">晚期肝纤维化风险：</div><div style="float: left">hello!<br>178</div></td>
+	</tr>
+	<tr style="height: 5em;">
+		<td ><div style="float: left">早期肝纤维化风险：</div><div style="float: left">hello!<br>178</div></td>
+	</tr>
+
+</table>
+
+<table style="width: 90%;
+	font-size: 12px;
+	margin-top: 15px;" align="center" id="table4">
+	<tr>
+		<td>报告者：</td>
+		<td>审核者：</td>
+	</tr>
+	<tr>
+		<td>检验日期：</td>
+		<td>报告日期：</td>
+	</tr>
+</table>
+
+<div class="myH4" style="margin-left: 5%;font-size: 14px;margin-top: 10px">本结果仅供临床医生参考，肝纤维化、肝硬化程度请结合临床。</div>

@@ -1,0 +1,141 @@
+@import tool.BasicInfoData
+@import tool.ImageInfo
+@import tool.ResultInfo
+@import models.Tables.MissionRow
+@(data: BasicInfoData, row: MissionRow, imageInfo: ImageInfo, resultInfo: ResultInfo)
+<style>
+		.myH4 {
+			margin-top: 0px;
+			margin-bottom: 0px;
+			font-size: 18px;
+			font-weight: 700;
+		}
+
+
+		#table2, #table2 tr th, #table2 tr td {
+			border: 2px solid black;
+		}
+
+		#table3, #table3 tr th, #table3 tr td {
+			border: 2px solid black;
+		}
+
+		table {
+			border-spacing: 0;
+			line-height: 1.5em;
+		}
+
+</style>
+<div class="myH4" style="text-align: center;">@data.title</div>
+<div class="myH4" style="text-align: center;
+	font-size: 16px">肝纤维化和肝硬化风险检测报告单</div>
+
+<table style="width: 90%;
+	border: 4px solid black;
+	font-size: 12px;
+	margin-top: 15px" align="center">
+	<tr>
+		<td colspan="6">送检单位： @data.unit</td>
+		<td colspan="6">地址： @data.address</td>
+	</tr>
+	<tr>
+		<td colspan="2">姓名： @data.name</td>
+		<td colspan="2">性别： @data.sex</td>
+		<td colspan="2">年龄： @data.age</td>
+		<td colspan="3">送检科室： @data.office</td>
+		<td colspan="3">申请医生： @data.doctor</td>
+	</tr>
+	<tr>
+		<td colspan="3">门诊/住院号： @data.number</td>
+		<td colspan="3">采样时间： @data.sampleTime</td>
+		<td colspan="3">送检时间： @data.submitTime</td>
+		<td colspan="3">样本号： @data.sample</td>
+	</tr>
+	<tr>
+		<td colspan="3">样本类型： @data.sampleType</td>
+		<td colspan="3">样本状态： @data.sampleStatus</td>
+	</tr>
+</table>
+
+<table style="width: 90%;
+	font-size: 12px;
+	margin-top: 15px;
+	table-layout: fixed" align="center" id="table2">
+	<tr>
+		<td colspan="3" style="text-align: center">输入值</td>
+		<td colspan="3" style="text-align: center">计算得到的风险</td>
+	</tr>
+	<tr>
+		<td colspan="1">项目</td>
+		<td colspan="1">测试值</td>
+		<td colspan="1">单位</td>
+		<td colspan="3" rowspan="7" style="text-align: center">@resultInfo.pStr <br>
+
+		</td>
+	</tr>
+	<tr>
+		<td colspan="1">年龄（Age）</td>
+		<td colspan="1">@data.age</td>
+		<td colspan="1">年</td>
+	</tr>
+	<tr>
+		<td colspan="1">天门冬氨酸氨基转移酶（AST）</td>
+		<td colspan="1">@row.ast</td>
+		<td colspan="1">U/L</td>
+	</tr>
+	<tr>
+		<td colspan="1">丙氨酸氨基转移酶（ALT）</td>
+		<td colspan="1">@row.alt</td>
+		<td colspan="1">U/L</td>
+	</tr>
+	<tr>
+		<td colspan="1">血小板计数（PLT）</td>
+		<td colspan="1">@row.plt</td>
+		<td colspan="1">10^9/L</td>
+	</tr>
+	<tr>
+		<td colspan="1">L-酪氨酸（Tyr）</td>
+		<td colspan="1">@row.tyr</td>
+		<td colspan="1">μmol/L</td>
+	</tr>
+	<tr>
+		<td colspan="1">牛磺胆酸（TCA）</td>
+		<td colspan="1">@row.tca</td>
+		<td colspan="1">ng/mL</td>
+	</tr>
+</table>
+
+<div class="myH4" style="margin-left: 5%;
+	font-size: 14px;
+	margin-top: 10px;
+	margin-bottom: 15px">风险示意图</div>
+
+<img style="margin-left: 5%;
+	width: 200px" src="data:image/png;base64,@resultInfo.base64">
+
+<table style="width: 90%;
+	font-size: 12px;
+	margin-top: 20px;" align="center" id="table3">
+	<tr>
+		<td>诊断建议：</td>
+	</tr>
+	<tr style="height: 5em;">
+		<td>
+		@Html(data.danger.replaceAll("\n","<br>"))
+		</td>
+	</tr>
+
+</table>
+
+<table style="width: 90%;
+	font-size: 12px;
+	margin-top: 15px;" align="center" id="table4">
+	<tr>
+		<td>报告者： @data.reporter</td>
+		<td>审核者： @data.checker</td>
+	</tr>
+	<tr>
+		<td>检验日期： @data.checkDate</td>
+		<td>报告日期： @data.reportDate</td>
+	</tr>
+</table>

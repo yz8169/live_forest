@@ -1,0 +1,407 @@
+@()(implicit request: RequestHeader)
+@main("批量预测-LiveForest")("batchPredict") {
+	<style>
+			.icon2x {
+				width: 24px;
+				font-size: 20px;
+				min-width: 24px;
+				display: inline-block;
+			}
+
+			.borders {
+				width: 400px;
+				height: 300px;
+				border: 1px solid #333333;
+				border-radius: 10px 10px 10px 10px;
+				margin: 30px 30px 30px 30px;
+				float: left;
+			}
+
+			row .logo {
+				width: 48px;
+				float: left;
+				margin-top: 10px;
+			}
+
+			row .title {
+				height: 36px;
+				position: relative;
+				word-break: break-all;
+				margin-left: 45px;
+			}
+
+			row .name {
+				font-size: 20px;
+				position: absolute;
+				top: 50%;
+				left: 0;
+				transform: translateY(-50%);
+			}
+
+			a.disabled {
+				pointer-events: none;
+				cursor: default;
+				opacity: .65
+			}
+
+			.name1 {
+				font-size: 18px;
+			}
+
+	</style>
+
+
+	<div class="page-content">
+
+		<div class="page-bar">
+			<ul class="page-breadcrumb">
+				<li>
+					<i class="fa fa-file"></i>
+					<a href="#">批量预测</a>
+				</li>
+			</ul>
+		</div>
+
+
+		<div class="row-fluid">
+
+			<div class="row">
+				<div class="col-md-12 col-sm-12">
+					<div class="portlet green-jungle box">
+						<div class="portlet-title">
+							<div class="caption">
+								设置参数
+							</div>
+						</div>
+
+						<div class="portlet-body">
+
+							<form class="registration-form form-horizontal" id="form"
+							accept-charset="UTF-8" method="post">
+
+								<div class="form-group">
+									<label class="control-label col-sm-2">
+										数据文件:</label>
+									<div class="col-sm-8">
+										<input id="file" type="file" class="file control-label" name="file" data-show-preview="false"
+										data-show-upload="false" accept=".xlsx">
+										<span class="help-block">
+											e.g.,&nbsp;<a href="@routes.PredictController.downloadExampleFile()?fileName=LF_test_data.xlsx"><em>
+											示例文件</em></a></span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="actions col-sm-offset-2 col-sm-2">
+										<button type="button" class="btn btn-primary" style="width: 90%;" id="myRun" onclick="myRunBefore()">
+											运行</button>
+									</div>
+
+								</div>
+
+								<div class="form-group">
+									<div class="actions col-sm-offset-2 col-sm-8">
+										<p>
+
+											<b>注1：</b>文件后缀必须为.xlsx。<br>
+											<b>注2：</b>
+											文件必须包含以“SampleID、Age、AST、ALT、PLT、Tyr、TCA”命名的七列数据（列顺序可变），每个命名字符需要完全一致且位于首行，每一行为一个需要预测的受试者数据，其中不可包含缺失值，若有缺失数据会导致结果出错。
+											<br><b>注3：</b>
+											文件可包含以“姓名、送检单位、地址、性别、送检科室、申请医生、门诊/住院号、采样时间、送检时间、样本类型、样本状态、标题、报告者、审核者、检验日期、报告日期”命名的十六列中任意数列(列顺序可变)，每个命名字符需要完全一致且位于首行，其中可包含缺失值。这些信息将会用于生成PDF报告。
+										</p>
+									</div>
+
+								</div>
+
+
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="tableResult" style="display: none">
+				<div class="row">
+					<div class="col-md-12 col-sm-12">
+						<div class="portlet green-jungle box">
+							<div class="portlet-title">
+								<div class="caption">
+									批量预测结果
+								</div>
+								<div class="tools">
+									<a href="javascript:;" class="collapse">
+									</a>
+								</div>
+							</div>
+
+							<div class="portlet-body" id="noCotent">
+
+								<div class="table-responsive" id="tableContent">
+
+									<label>选择显示的列:</label>
+									<div id="checkbox" class="checkbox">
+
+									</div>
+
+									<table class="display table table-bordered" id="missionTable" data-pagination="true" data-search="true"
+									data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, 200]" data-multiple-search="true"
+									data-show-export="true" data-export-types="['xlsx']" data-export-data-type="all"
+									>
+										<thead>
+											<th data-field="sampleId" data-sortable="true">样品号</th>
+											<th data-field="name" data-sortable="true">姓名</th>
+											<th data-field="age" data-sortable="true">年龄</th>
+											<th data-field="ast" data-sortable="true">AST</th>
+											<th data-field="alt" data-sortable="true">ALT</th>
+											<th data-field="plt" data-sortable="true">PLT</th>
+											<th data-field="tyr" data-sortable="true">Tyr</th>
+											<th data-field="tca" data-sortable="true">TCA</th>
+											<th data-field="result" data-sortable="true">结果</th>
+
+											<th data-field='unit' data-sortable='true'>送检单位</th>
+											<th data-field='address' data-sortable='true'>地址</th>
+											<th data-field='sex' data-sortable='true'>性别</th>
+											<th data-field='office' data-sortable='true'>送检科室</th>
+											<th data-field='doctor' data-sortable='true'>申请医生</th>
+											<th data-field='number' data-sortable='true'>门诊/住院号</th>
+											<th data-field='sampleTime' data-sortable='true'>采样时间</th>
+											<th data-field='submitTime' data-sortable='true'>送检时间</th>
+											<th data-field='sampleType' data-sortable='true'>样本类型</th>
+											<th data-field='sampleStatus' data-sortable='true'>样本状态</th>
+											<th data-field='title' data-sortable='true'>标题</th>
+											<th data-field='reporter' data-sortable='true'>报告者</th>
+											<th data-field='checker' data-sortable='true'>审核者</th>
+											<th data-field='checkDate' data-sortable='true'>检验日期</th>
+											<th data-field='reportDate' data-sortable='true'>报告日期</th>
+
+
+											<th data-field="operate" data-formatter="operateFmt">操作</th>
+										</thead>
+									</table>
+
+								</div>
+
+
+							</div>
+
+
+							<div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			@user.predictResult()
+
+		</div>
+
+
+	</div>
+
+	@user.myTool()
+
+	<script>
+			function cancel() {
+				showResult(missionJson.id)
+			}
+
+			var index
+			$(function () {
+				$('#missionTable').bootstrapTable({
+					exportOptions: {
+						fileName: "LiveForest_batch_result"
+					},
+
+				});
+
+				bootstrapValidator()
+
+				$('.file').on('fileclear', function (event) {
+					$("#form").bootstrapValidator("revalidateField", "file")
+				});
+
+				var array = ["姓名", "送检单位", "地址", "性别", "送检科室", "申请医生", "门诊/住院号", "采样时间", "送检时间",
+					"样本类型", "样本状态", "标题", "报告者", "审核者", "检验日期", "报告日期"]
+				var values = ["name", "unit", "address", "sex", "office", "doctor", "number", "sampleTime", "submitTime",
+					"sampleType", "sampleStatus", "title", "reporter", "checker", "checkDate", "reportDate"]
+				var html = ""
+				$.each(array, function (n, value) {
+							html += "<label style='margin-right: 15px'>" +
+									"<input type='checkbox' checked  value='" + values[n] + "' onclick=\"setColumns('" + values[n] + "')\">" + value +
+									"</label>"
+						}
+				);
+				$("#checkbox").append(html)
+
+				var hiddenArray= ["name", "unit", "address", "sex", "office", "doctor", "number", "sampleTime", "submitTime",
+					"sampleType", "sampleStatus", "title", "reporter", "checker", "reportDate"]
+
+				$.each(hiddenArray, function (n, value) {
+					$('#missionTable').bootstrapTable('hideColumn', value);
+					$("input:checkbox[value='" + value + "']").attr("checked", false)
+				})
+
+
+			})
+
+			function setColumns(value) {
+				var element = $("input:checkbox[value=" + value + "]")
+				if (element.is(":checked")) {
+					$('#missionTable').bootstrapTable('showColumn', value);
+				} else {
+					$('#missionTable').bootstrapTable('hideColumn', value);
+				}
+			}
+
+			function operateFmt(value, row, index) {
+				var resultStr = "<a title='查看结果' onclick=\"showResult('" + row.id + "')\" style='cursor: pointer;'><span><em class='fa fa-eye'></em></span></a>"
+				var rs = [resultStr]
+				return rs.join(" ")
+			}
+
+			$(".file").fileinput({
+				showPreview: false,
+				browseLabel: "选择...",
+				removeLabel: "删除文件",
+				language: "zh"
+			});
+
+			function clearFile() {
+				$("#file").fileinput('clear')
+				$("#form").bootstrapValidator("revalidateField", "file")
+			}
+
+			function myRun() {
+				var form = $("#form")
+				var bv = form.data("bootstrapValidator")
+				bv.validate()
+				if (bv.isValid()) {
+					var element = "<div id='content'><span id='info'><span id='prompt'>正在检查文件</span><span id='progress'>。。。</span></span>&nbsp;<img class='runningImage' src='@routes.Assets.at("images/running2.gif")' style='width: 30px;height: 20px;'></div>"
+					index = layer.alert(element, {
+						skin: 'layui-layer-molv'
+						, closeBtn: 0,
+						title: zhInfo,
+						btn: []
+					});
+					var fd = new FormData()
+					fd.append("file", $("#file")[0].files[0])
+					$.ajax({
+						url: "@routes.PredictController.fileCheck()",
+						type: "post",
+						processData: false,
+						contentType: false,
+						data: fd,
+						success: function (data) {
+							if (!data.valid) {
+								layer.close(index)
+								swal("Error", data.message, "error")
+								clearFile()
+								$("#tableResult").hide()
+								$("#result").hide()
+							} else {
+								$("#prompt").text("正在上传文件")
+								batchPredict()
+
+							}
+						}
+					});
+
+				}
+			}
+
+			function batchPredict() {
+				var form1 = new FormData($("#form")[0]);
+				$("#tableResult,#result").hide()
+				$.ajax({
+					xhr: function () {
+						var myXhr = $.ajaxSettings.xhr();
+						if (myXhr.upload) {
+							myXhr.upload.addEventListener('progress', progressHandlingFunction, false);
+						}
+						return myXhr
+					},
+					url: "@routes.PredictController.batchPredict()",
+					type: "post",
+					processData: false,
+					contentType: false,
+					data: form1,
+					success: function (data) {
+						layer.close(index)
+						if (data.valid == "false") {
+							swal("Error", data.message, "error")
+							$("#tableResult").hide()
+						} else {
+							$("#missionTable").bootstrapTable("load", data)
+							$("#tableResult").show()
+							reduceTime()
+						}
+					}
+				});
+			}
+
+			function refreshContent(data) {
+				var checkboxHtml = ""
+
+				$.each(data.columnNames, function (i, v) {
+					checkboxHtml += "<label style='margin-right: 15px'>" +
+							"<input type='checkbox' checked='checked' value='" + v + "' onclick=\"setColumns('" + v + "')\">" + v +
+							"</label>"
+				})
+
+				$("#checkbox").empty().append(checkboxHtml)
+				var html = ""
+				$.each(data.columnNames, function (i, v) {
+					html += "<th data-field='" + v + "' data-sortable='true'>" + v + "</th>"
+				})
+				$("#tableContent").empty().append(originalHtml)
+				$("#marker").after(html)
+				$("#marker").text(data.marker)
+				$('#table').bootstrapTable({
+					data: data.array,
+					exportOptions: {
+						fileName: "LiveForest_batch_result"
+					},
+					exportHiddenColumns: true
+				});
+				$.each(data.columnNames.slice(7), function (n, value) {
+							$('#table').bootstrapTable('hideColumn', value);
+							$("input:checkbox[value='" + value + "']").attr("checked", false)
+						}
+				);
+			}
+
+			function bootstrapValidator() {
+				$('#form').bootstrapValidator({
+					framework: 'bootstrap',
+					icon: {
+						valid: 'glyphicon glyphicon-ok',
+						invalid: 'glyphicon glyphicon-remove',
+						validating: 'glyphicon glyphicon-refresh'
+					},
+					fields: {
+						file: {
+							validators: {
+								notEmpty: {
+									message: '数据文件不能为空！'
+								},
+								file: {
+									extension: 'xlsx',
+									message: '数据文件必须是xlsx文件！'
+								}
+							}
+						},
+					}
+
+				});
+			}
+
+
+
+
+	</script>
+
+}

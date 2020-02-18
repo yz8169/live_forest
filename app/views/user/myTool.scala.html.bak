@@ -1,0 +1,278 @@
+@()
+
+<div id="exportModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="width: 1000px">
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">
+					<i class="fa fa-pencil"></i>
+					<span id="lblAddTitle" style="font-weight: bold">导出Pdf报告</span>
+				</h4>
+			</div>
+			<form class="form-horizontal" id="exportForm" action="@routes.PredictController.export()"
+			data-toggle="validator" method="post" target="_blank">
+				<div class="modal-body">
+					<div class="row-fluid">
+						<input class="form-control" name="missionId" type="hidden"/>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">标题:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="title" value="深圳绘云医学检验实验室"/>
+							</div>
+							<label class="control-label col-sm-2">计算得到的风险:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="danger"/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">送检单位:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="unit" />
+							</div>
+							<label class="control-label col-sm-2">地址:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="address"/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">姓名:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="name" />
+							</div>
+							<label class="control-label col-sm-2">性别:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="sex"/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">年龄:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="age" readonly/>
+							</div>
+							<label class="control-label col-sm-2">送检科室:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="office"/>
+							</div>
+
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">申请医生:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="doctor"/>
+							</div>
+							<label class="control-label col-sm-2">门诊/住院号:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="number" />
+							</div>
+
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">采样时间:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="sampleTime"/>
+							</div>
+							<label class="control-label col-sm-2">送检时间:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="submitTime" />
+							</div>
+
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">样本号:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="sample" />
+							</div>
+							<label class="control-label col-sm-2">临床诊断:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="diagnose"/>
+							</div>
+
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">样本类型:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="sampleType"/>
+							</div>
+							<label class="control-label col-sm-2">样本状态:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="sampleStatus"/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">报告者:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="reporter"/>
+							</div>
+							<label class="control-label col-sm-2">审核者:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="checker"/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">检验日期:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="checkDate"/>
+							</div>
+							<label class="control-label col-sm-2">报告日期:</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="reportDate"/>
+							</div>
+						</div>
+
+						<h4>数据</h4>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">天门冬氨酸氨基转移酶 (U/L):</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="ast" readonly/>
+							</div>
+							<label class="control-label col-sm-2">丙氨酸氨基转移酶 (U/L):</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="alt" readonly/>
+							</div>
+						</div>
+
+						<div class="form-group">
+
+							<label class="control-label col-sm-2">血小板计数 (10^9/L):</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="plt" readonly/>
+							</div>
+							<label class="control-label col-sm-2">牛磺胆酸 (ng/mL):</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="tca" readonly/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2">L-酪氨酸 (uM):</label>
+							<div class="col-sm-3">
+								<input class="form-control" name="tyr" readonly/>
+							</div>
+
+						</div>
+
+
+					</div>
+				</div>
+				<div class="modal-footer bg-info">
+					<input type="hidden" id="id" name="id" />
+					<button type="submit" class="btn blue">
+						确定</button>
+					<button type="button" class="btn green" data-dismiss="modal">
+						取消</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<script>
+
+		var name
+		var age
+		var sampleId
+		var missionId
+		var extraDataJson = {}
+		var missionJson = {}
+
+		function reduceTime() {
+			$.ajax({
+				url: "@routes.UserController.reduceTimes()",
+				type: "get",
+				success: function (data) {
+
+				}
+			});
+
+		}
+
+		function myRunBefore() {
+			$.ajax({
+				url: "@routes.UserController.getLimit()",
+				type: "get",
+				dataType: "json",
+				success: function (data) {
+					if (!data) {
+						swal("Error", "您无此权限使用该系统，请与管理员联系！", "error")
+						$("#myRun").attr("disabled", true)
+					} else {
+						myRun()
+					}
+				}
+			})
+		}
+
+		function showExport() {
+			$("#exportModal").modal("show")
+			$("#exportForm input[name='name']").val(extraDataJson.name)
+			$("#exportForm input[name='age']").val(missionJson.age)
+			$("#exportForm input[name='sample']").val(extraDataJson.sampleId)
+			$("#exportForm input[name='missionId']").val(missionJson.id)
+			$("#exportForm input[name='unit']").val(extraDataJson.unit)
+			$("#exportForm input[name='address']").val(extraDataJson.address)
+			$("#exportForm input[name='sex']").val(extraDataJson.sex)
+			$("#exportForm input[name='office']").val(extraDataJson.office)
+			$("#exportForm input[name='doctor']").val(extraDataJson.doctor)
+			$("#exportForm input[name='number']").val(extraDataJson.number)
+			$("#exportForm input[name='sampleTime']").val(extraDataJson.sampleTime)
+			$("#exportForm input[name='submitTime']").val(extraDataJson.submitTime)
+			$("#exportForm input[name='diagnose']").val(extraDataJson.diagnose)
+			$("#exportForm input[name='sampleType']").val(extraDataJson.sampleType)
+			$("#exportForm input[name='sampleStatus']").val(extraDataJson.sampleStatus)
+			$("#exportForm input[name='title']").val(extraDataJson.title)
+			$("#exportForm input[name='reporter']").val(extraDataJson.reporter)
+			$("#exportForm input[name='checker']").val(extraDataJson.checker)
+			$("#exportForm input[name='checkDate']").val(extraDataJson.checkDate)
+			$("#exportForm input[name='reportDate']").val(extraDataJson.reportDate)
+			$("#exportForm input[name='ast']").val(missionJson.ast)
+			$("#exportForm input[name='alt']").val(missionJson.alt)
+			$("#exportForm input[name='plt']").val(missionJson.plt)
+			$("#exportForm input[name='tyr']").val(missionJson.tyr)
+			$("#exportForm input[name='tca']").val(missionJson.tca)
+			if(extraDataJson.danger==""){
+				$("#exportForm input[name='danger']").val(missionJson.result)
+			}else{
+				$("#exportForm input[name='danger']").val(extraDataJson.danger)
+			}
+
+		}
+
+		function showResult(id) {
+			$("#mode2,#mode3").hide()
+			var index = layer.load(1, {
+				shade: [0.1, '#fff']
+			});
+			$.ajax({
+				url: "@routes.PredictController.predictResult()?missionId=" + id,
+				type: "get",
+				dataType: "json",
+				success: function (data) {
+					layer.close(index)
+					$("#showSampleId").text(data.extraData.sampleId)
+					$("#showName").text(data.extraData.name)
+					missionJson = data.mission
+					extraDataJson = data.extraData
+					dealPredictInfo(data)
+					$("#tab_1").tab("show")
+					$("#result").show()
+					var target_top = $("#result").offset().top
+					$("html,body").animate({scrollTop: target_top}, 800)
+				}
+			})
+		}
+
+
+</script>
