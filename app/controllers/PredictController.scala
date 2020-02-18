@@ -31,7 +31,7 @@ class PredictController @Inject()(cc: ControllerComponents, formTool: FormTool, 
                                   trashDao: TrashDao) extends AbstractController(cc) {
 
   def predictBefore = Action { implicit request =>
-    println("15")
+    println("17")
     Ok(views.html.user.predict())
   }
 
